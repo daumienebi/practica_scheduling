@@ -122,23 +122,17 @@ def busqueda_recocido_simulado(d,n):
     nivel = 0
     max_nivel = 100
 
-
     # Repetir mientras no se alcance el limite de niveles
     while nivel < max_nivel and T_inicial > 0.001:
-
         # Realizar L intentos a esta temperatura
         for i in range(level_length):
-
             # Crear un vecino intercambiando dos trabajos
             vecino = secuencia.copy()
-
             if n > 1:
                 pos1 = random.randint(0, n - 1)
                 pos2 = random.randint(0, n - 1)
-
                 while pos1 == pos2:
                     pos2 = random.randint(0, n - 1)
-
                 vecino[pos1], vecino[pos2] = (vecino[pos2], vecino[pos1])
 
             # Calcular la diferencia entre las soluciones
@@ -169,32 +163,33 @@ def busqueda_recocido_simulado(d,n):
         nivel = nivel + 1
 
     return mejor_secuencia, mejor_fmax
-        
 
+def busqueda_aleatoria(d,n):
+    # Pedir numero de iteraciones
+    numero_iteraciones = input("¿Cuantas iteraciones")
+    # Inicio
+    secuencia = list(range(n))
+    random.shuffle(secuencia)
+    solucion_actual = calcular_fmax(secuencia, d)
+    mejor_solucion = solucion_actual
+    mejor_secuencia = secuencia
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # Repeticion durante el numero de iteraciones necesarias
+    for i in range(numero_iteraciones):
+        if solucion_actual > mejor_solucion:
+            # Actualizamos los datos del fmax y de la mejor secuencia que hemos encontrado
+            mejor_solucion = solucion_actual 
+            mejor_secuencia = secuencia.copy()
+        # Volvemos a generar otra secuencia y calcular la solucion actual
+        random.shuffle(secuencia)
+        solucion_actual = calcular_fmax(secuencia, d)
+    return mejor_secuencia
 
 def main():
     try:
         m, n, d = leer_archivo()
 
-        secuencia, makespan = busqueda_local(d, n)
+        secuencia, fmax = busqueda_local(d, n)
         F = calcular_Funcion_F(secuencia, d)
 
         print("\n--- RESULTADOS ---")
@@ -210,9 +205,7 @@ def main():
         print("\nMatriz de tiempos de finalización F (filas = máquinas):")
         for fila in F:
             print(fila)
-
-        print("\nMakespan (Fmax):", makespan)
-
+        print("\n Fmax:", fmax)
     except (OSError, ValueError, IndexError) as error:
         print("Error al leer o procesar el archivo:", error)
 
