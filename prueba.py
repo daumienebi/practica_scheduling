@@ -105,7 +105,7 @@ def busqueda_local(d, n):
     return secuencia, fmax_actual
 
 
-def busqueda_recocido_simulado(d,n):
+def algoritmo_recocido_simulado(d,n):
     # Crear una solución inicial y cal Fmax
     secuencia = list(range(n))
     random.shuffle(secuencia)
@@ -186,29 +186,55 @@ def busqueda_aleatoria(d,n):
     return mejor_secuencia
 
 def main():
-    try:
-        m, n, d = leer_archivo()
+    # Leer el archivo
+    m, n, d = leer_archivo()
+    # Elegir el algoritmo
+    print("\nElige el algoritmo:")
+    print("1. Algoritmo de búsqueda aleatoria")
+    print("2. Algoritmo de búsqueda local")
+    print("3. Algoritmo de recocido simulado")
+    print("4. Algoritmo Genético")
 
-        secuencia, fmax = busqueda_local(d, n)
-        F = calcular_Funcion_F(secuencia, d)
+    opcion = input("Introduce una opcion (1 o 2): ")
 
-        print("\n--- RESULTADOS ---")
-        print("Número de máquinas:", m)
-        print("Número de trabajos:", n)
+    match opcion:
+        case "1":
+            #secuencia, fmax = busqueda_aleatoria(d, n)
+            nombre_algoritmo = "Algoritmo de búsqueda aleatoria"
+        case "2":
+            secuencia, fmax = busqueda_local(d, n)
+            nombre_algoritmo = "Algoritmo de búsqueda local del mejor"
+        case "3":
+            secuencia, fmax = algoritmo_recocido_simulado(d, n)
+            nombre_algoritmo = "Algoritmo de recocido simulado"
+        case "4":
+            secuencia, fmax = algoritmo_recocido_simulado(d, n)
+            nombre_algoritmo = "Algoritmo de recocido simulado"
+        case _:
+            print("Opcion no valida.")
+            return
+        
+    # Calcular la matriz de tiempos de finalizacion
+    F = calcular_Funcion_F(secuencia, d)
 
-        print("\nMatriz de tiempos de procesamiento d (filas = trabajos):")
-        for fila in d:
-            print(fila)
+    # Generar la secuencia inicial
+    secuencia_inicial = list(range(n))
+    random.shuffle(secuencia_inicial)
+    
+    # Mostrar los resultados
+    print("\n--- RESULTADOS ---")
+    print("Algoritmo utilizado:", nombre_algoritmo)
+    print("Numero de maquinas:", m)
+    print("Numero de trabajos:", n)
 
-        print("\nSecuencia encontrada:", [trabajo + 1 for trabajo in secuencia])
+    print("\nSecuencia inicial:")
+    print([trabajo + 1 for trabajo in secuencia_inicial])
 
-        print("\nMatriz de tiempos de finalización F (filas = máquinas):")
-        for fila in F:
-            print(fila)
-        print("\n Fmax:", fmax)
-    except (OSError, ValueError, IndexError) as error:
-        print("Error al leer o procesar el archivo:", error)
+    print("\nMatriz de tiempos de finalizacion F:")
+    for fila in F:
+        print(fila)
 
+    print("\nFmax:", fmax)
 
 if __name__ == "__main__":
     main()
