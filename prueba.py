@@ -172,10 +172,6 @@ def algoritmo_recocido_simulado(d,n):
         
 
 
-
-
-
-
 def main():
 
     # Leer el archivo
@@ -210,14 +206,18 @@ def main():
     # Calcular la matriz de tiempos de finalizacion
     F = calcular_Funcion_F(secuencia, d)
 
+    # Generar la secuencia inicial
+    secuencia_inicial = list(range(n))
+    random.shuffle(secuencia_inicial)
+    
     # Mostrar los resultados
     print("\n--- RESULTADOS ---")
     print("Algoritmo utilizado:", nombre_algoritmo)
     print("Numero de maquinas:", m)
     print("Numero de trabajos:", n)
 
-    print("\nSecuencia encontrada:")
-    print([trabajo + 1 for trabajo in secuencia])
+    print("\nSecuencia inicial:")
+    print([trabajo + 1 for trabajo in secuencia_inicial])
 
     print("\nMatriz de tiempos de finalizacion F:")
     for fila in F:
