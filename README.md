@@ -12,59 +12,58 @@ El cálculo de la matriz de tiempos de finalización $F_{ij}$ sigue la formulaci
 
 ---
 
-## Requisitos e Instalación
+## Cómo Ejecutar y Probar
 
-Para ejecutar la aplicación localmente, asegúrate de tener **Python 3.10 o superior** instalado.
+Existen tres formas de probar la práctica, siendo la **Opción 1** la más rápida e inmediata:
 
-Instala las dependencias necesarias con pip:
+### 1. Acceso Directo Online (Recomendado para evaluación — Sin instalación)
+No requiere instalar Python ni ninguna librería en el ordenador. La aplicación web se encuentra desplegada y lista para usarse directamente en el navegador:
 
-```bash
-pip install streamlit pandas altair
-```
+**[https://practicascheduling.streamlit.app/](https://practicascheduling.streamlit.app/)**
 
----
-
-## Cómo Ejecutar
-
-El proyecto cuenta con dos modos de ejecución:
-
-### 1. Interfaz Web (Recomendada)
-Para abrir la interfaz visual interactiva en tu navegador:
-
-```bash
-streamlit run app.py
-```
-
-Una vez ejecutado el comando, se abrirá automáticamente en tu navegador la dirección:
-**http://localhost:8501**
-
-Desde la web podrás:
-- Seleccionar instancias de prueba (`prueba.txt` de 5 trabajos y 2 máquinas o `prueba2.txt` de 10 trabajos y 3 máquinas).
-- Subir tus propios archivos `.txt` de datos.
-- Ejecutar cualquier algoritmo individualmente o usar la opción **Comparar todos los algoritmos**.
-- Visualizar las matrices $d_{ij}$ y $F_{ij}$, las métricas de mejora y un **diagrama de Gantt interactivo**.
+Desde la web interactiva podrás:
+- Seleccionar directamente las instancias de prueba (`prueba.txt` de 5 trabajos y 2 máquinas o `prueba2.txt` de 10 trabajos y 3 máquinas).
+- Subir cualquier otro archivo `.txt` de datos.
+- Ejecutar cualquiera de los 4 algoritmos o usar la opción **Comparar todos los algoritmos** a la vez.
+- Visualizar interactivamente las matrices $d_{ij}$ y $F_{ij}$, las métricas de mejora y el **diagrama de Gantt**.
 
 ---
 
-### 2. Modo Consola
-Si prefieres interactuar mediante la consola de comandos estándar:
+### 2. Ejecución Local con Interfaz Web
+Si se desea ejecutar la interfaz web de manera local en el propio equipo:
+
+1. Asegúrate de tener Python 3.10 o superior instalado.
+2. Instala las dependencias necesarias:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Lanza la aplicación:
+   ```bash
+   streamlit run app.py
+   ```
+   Se abrirá automáticamente en tu navegador en `http://localhost:8501`.
+
+---
+
+### 3. Modo Consola (Terminal)
+Si se prefiere interactuar mediante la consola de comandos estándar:
 
 ```bash
 python main.py
 ```
 
-El programa te solicitará:
-1. El nombre del fichero de datos (por ejemplo, `prueba.txt`).
-2. La opción del algoritmo a ejecutar (1 a 4).
-3. Mostrará en texto la secuencia inicial, la mejor secuencia obtenida, la matriz $F_{ij}$ y el $F_{max}$.
+El programa solicitará:
+1. El nombre del fichero de datos (por ejemplo, `prueba.txt` o `prueba2.txt`).
+2. El algoritmo a ejecutar (1 a 4).
+3. Mostrará por terminal la secuencia inicial, la mejor secuencia encontrada, la matriz $F_{ij}$ y el $F_{max}$.
 
 ---
 
-## Estructura del Proyecto
+## 📁 Estructura del Proyecto
 
 - `main.py`: Lógica de cálculo de tiempos ($F$), evaluación de $F_{max}$, funciones de lectura y los 4 algoritmos de optimización.
-- `app.py`: Aplicación web construida con Streamlit.
+- `app.py`: Aplicación web interactiva construida con Streamlit.
+- `requirements.txt`: Dependencias del proyecto (`streamlit`, `pandas`, `altair`).
 - `prueba.txt`: Instancia de ejemplo del PDF (5 órdenes, 2 máquinas).
 - `prueba2.txt`: Instancia extendida (10 órdenes, 3 máquinas).
 - `Introducción a la F.pdf`: Documento de referencia con la formulación del problema y el ejemplo resuelto.
-
