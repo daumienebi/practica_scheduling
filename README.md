@@ -36,7 +36,7 @@ streamlit run app.py
 ```
 
 Una vez ejecutado el comando, se abrirá automáticamente en tu navegador la dirección:
-👉 **http://localhost:8501**
+**http://localhost:8501**
 
 Desde la web podrás:
 - Seleccionar instancias de prueba (`prueba.txt` de 5 trabajos y 2 máquinas o `prueba2.txt` de 10 trabajos y 3 máquinas).
@@ -60,7 +60,7 @@ El programa te solicitará:
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 - `main.py`: Lógica de cálculo de tiempos ($F$), evaluación de $F_{max}$, funciones de lectura y los 4 algoritmos de optimización.
 - `app.py`: Aplicación web construida con Streamlit.
