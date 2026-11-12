@@ -9,29 +9,37 @@ def leer_archivo():
     with open(nombre_archivo, "r") as archivo:
         lineas = archivo.readlines()
 
-    # Leer el numero de trabajos y maquinas
-    primera_linea = lineas[0].split()
-    n = int(primera_linea[0])
-    m = int(primera_linea[1])
+    # Filtrar posibles líneas vacías al inicio o final
+    lineas = [l for l in lineas if l.strip()]
 
-    # Leer los tiempos de procesamiento
+    # Leer el número de trabajos (órdenes) y de máquinas
+    primera_linea = lineas[0].split()
+    num_trabajos = int(primera_linea[0])
+    num_maquinas = int(primera_linea[1])
+
+    # Leer los tiempos de procesamiento dij
     d = []
 
     for linea in lineas[1:]:
         valores = linea.split()
-        tiempos = []
+        if not valores:
+            continue
 
-        for j in range(1, len(valores), 2):
-            tiempos.append(int(valores[j]))
+        # Soporta tanto formato con pares (maquina tiempo: "0 5 1 3")
+        # como formato directo con solo tiempos ("5 3")
+        if len(valores) >= 2 * num_maquinas:
+            tiempos = [int(valores[j]) for j in range(1, 2 * num_maquinas, 2)]
+        else:
+            tiempos = [int(v) for v in valores[:num_maquinas]]
 
         d.append(tiempos)
 
-    return m, n, d
+    # Devuelve (número de máquinas m, número de trabajos n, matriz d)
+    return num_maquinas, num_trabajos, d
 
 """
     Calcula la matriz de tiempos de finalización F (n x m).
-    Las filas corresponden a cada trabajo (0..n-1) y las columnas a cada máquina (0..m-1),
-    tal y como se define en 'Introducción a la F.pdf'.
+    Las filas corresponden a cada trabajo (0..n-1) y las columnas a cada máquina (0..m-1).
 """
 def calcular_Funcion_F(secuencia, d):
     n = len(secuencia)
@@ -128,23 +136,21 @@ def algoritmo_recocido_simulado(d, n, secuencia_inicial=None):
     mejor_fmax = fmax_actual
 
     # Definir los valores iniciales de los parámetros de control
-    T_inicial = 1000
+    T_inicial = 1000.0
+    T = T_inicial
     level_length = 100
     alpha = 0.95
     nivel = 0
     max_nivel = 100
 
     # Repetir mientras no se alcance el límite de niveles ni temperatura mínima
-    while nivel < max_nivel and T_inicial > 0.001:
+    while nivel < max_nivel and T > 0.001:
         # Realizar L intentos a esta temperatura
-        for i in range(level_length):
+        for _ in range(level_length):
             # Crear un vecino intercambiando dos trabajos al azar
             vecino = secuencia.copy()
             if n > 1:
-                pos1 = random.randint(0, n - 1)
-                pos2 = random.randint(0, n - 1)
-                while pos1 == pos2:
-                    pos2 = random.randint(0, n - 1)
+                pos1, pos2 = random.sample(range(n), 2)
                 vecino[pos1], vecino[pos2] = vecino[pos2], vecino[pos1]
 
             # Calcular la diferencia de coste entre el vecino y la solución actual
@@ -162,7 +168,7 @@ def algoritmo_recocido_simulado(d, n, secuencia_inicial=None):
                     mejor_fmax = fmax_actual
             else:
                 # Aceptar una solución peor con probabilidad e^(-delta / T)
-                probabilidad = math.exp(-delta / T_inicial)
+                probabilidad = math.exp(-delta / T)
                 r = random.random()
 
                 if r <= probabilidad:
@@ -170,17 +176,18 @@ def algoritmo_recocido_simulado(d, n, secuencia_inicial=None):
                     fmax_actual = fmax_vecino
 
         # Enfriar el sistema
-        T_inicial = T_inicial * alpha
-        nivel = nivel + 1
+        T = T * alpha
+        nivel += 1
 
     return mejor_secuencia, mejor_fmax
 
-def busqueda_aleatoria(d, n, secuencia_inicial=None):
+def busqueda_aleatoria(d, n, secuencia_inicial=None, numero_iteraciones=None):
     """
     Búsqueda aleatoria: genera secuencias al azar durante un número de iteraciones
     y conserva aquella que obtiene el mejor (menor) Fmax.
     """
-    numero_iteraciones = int(input("¿Cuántas iteraciones?: "))
+    if numero_iteraciones is None:
+        numero_iteraciones = int(input("¿Cuántas iteraciones?: "))
 
     # Solución inicial
     if secuencia_inicial is None:
@@ -194,7 +201,7 @@ def busqueda_aleatoria(d, n, secuencia_inicial=None):
     mejor_secuencia = secuencia.copy()
 
     # Repetición durante el número de iteraciones indicadas
-    for i in range(numero_iteraciones):
+    for _ in range(numero_iteraciones):
         # Generamos una nueva secuencia aleatoria y calculamos su Fmax
         random.shuffle(secuencia)
         solucion_actual = calcular_fmax(secuencia, d)

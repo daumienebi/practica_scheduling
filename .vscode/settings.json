@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "C:\\Users\\ddsak\\AppData\\Local\\Python\\pythoncore-3.13-64\\python.exe",
+    "python.analysis.extraPaths": [
+        "C:\\Users\\ddsak\\AppData\\Local\\Python\\pythoncore-3.13-64\\Lib\\site-packages"
+    ]
+}
+
