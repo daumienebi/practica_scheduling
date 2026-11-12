@@ -6,7 +6,7 @@ import main
 
 st.set_page_config(
     page_title="Flow Shop Scheduling",
-    page_icon="⏱️",
+    page_icon="",
     layout="wide"
 )
 
