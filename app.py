@@ -52,7 +52,7 @@ def crear_df_gantt(secuencia, d, F):
 st.title("⏱️ Flow Shop Permutacional - Scheduling")
 
 # --- BARRA LATERAL ---
-st.sidebar.header("📁 1. Entrada de Datos")
+st.sidebar.header("1. Entrada de Datos")
 fuente_archivo = st.sidebar.radio(
     "Selecciona archivo:",
     ("prueba.txt (5 trab., 2 máq.)", "prueba2.txt (10 trab., 3 máq.)", "Subir archivo .txt")
@@ -80,7 +80,7 @@ if contenido:
     m, n, d = parsear_datos(contenido)
     st.sidebar.success(f"Instancia: **{n} trabajos**, **{m} máquinas**")
 
-    st.sidebar.header("⚙️ 2. Algoritmo")
+    st.sidebar.header("2. Algoritmo")
     algoritmo = st.sidebar.selectbox(
         "Elige el algoritmo:",
         (
@@ -102,20 +102,20 @@ if contenido:
             step=50
         )
 
-    ejecutar = st.sidebar.button("🚀 Ejecutar Algoritmo", type="primary", use_container_width=True)
+    ejecutar = st.sidebar.button("Ejecutar Algoritmo", type="primary", use_container_width=True)
 
     # --- PESTAÑAS / COLUMNAS ---
     col_izq, col_der = st.columns([1, 2])
 
     with col_izq:
-        st.subheader("📋 Matriz de Tiempos $d_{ij}$")
+        st.subheader("Matriz de Tiempos $d_{ij}$")
         columnas_d = [f"Máq {j+1}" for j in range(m)]
         filas_d = [f"Trabajo {i+1}" for i in range(n)]
         df_d = pd.DataFrame(d, index=filas_d, columns=columnas_d)
         st.dataframe(df_d, use_container_width=True)
 
     with col_der:
-        st.subheader("📊 Resultados")
+        st.subheader("Resultados")
 
         if ejecutar:
             # Secuencia inicial aleatoria común para comparar equitativamente
@@ -181,7 +181,7 @@ if contenido:
             st.dataframe(df_F, use_container_width=True)
 
             # Diagrama de Gantt
-            st.markdown("#### 📅 Diagrama de Gantt")
+            st.markdown("#### Diagrama de Gantt")
             df_gantt = crear_df_gantt(secuencia, d, F)
             if not df_gantt.empty:
                 orden_maquinas = [f"Máquina {j+1}" for j in range(m)]
@@ -200,6 +200,6 @@ if contenido:
                 st.altair_chart(chart, use_container_width=True)
 
         else:
-            st.info("Configura las opciones en el panel lateral y pulsa **🚀 Ejecutar Algoritmo**.")
+            st.info("Configura las opciones en el panel lateral y pulsa ** Ejecutar Algoritmo**.")
 else:
     st.warning("Selecciona o sube un archivo para comenzar.")
