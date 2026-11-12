@@ -49,7 +49,7 @@ def crear_df_gantt(secuencia, d, F):
                 })
     return pd.DataFrame(filas)
 
-st.title("⏱️ Flow Shop Permutacional - Scheduling")
+st.title("Flow Shop Permutacional - Scheduling")
 
 # --- BARRA LATERAL ---
 st.sidebar.header("1. Entrada de Datos")
